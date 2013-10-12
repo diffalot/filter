@@ -25,6 +25,7 @@ app.use(expressValidator({
 		};
 	}
 }));
+app.use(express.static(__dirname + '/public'))
 
 app.use(function(req, res) {
 	console.log('%s %s', req.method, req.url);
