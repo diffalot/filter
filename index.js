@@ -66,7 +66,8 @@ app.use(function(req, res) {
 
 	var url = url_con.query.u;
 	var filter = url_con.query.f;
-	if ( url.slice(6) != 'http://' || url.slice(7) != 'https://' ) {
+	console.log(url)
+	if ( url.slice(0,7) != 'http://' && url.slice(0,8) != 'https://' ) {
 		url = 'http://' + url;
 	}
 	console.log('%s %s\n', filter, url);
