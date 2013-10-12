@@ -58,31 +58,32 @@ app.use(function(req, res) {
 	var errors = req.validationErrors();
 	if (errors) {
 		res.end( JSON.stringify( _.map(errors, 'msg')) );
-	}
-	
-	res.writeHead(200, {'Content-Type': 'text/html'});
-	
-	var url_con = url_parser.parse(req.url, true);
-	//console.log(url_con);
+	} else {
 
-	var url = url_con.query.u;
-	var filter = url_con.query.f;
-	console.log(url)
-	if ( url.slice(0,7) != 'http://' && url.slice(0,8) != 'https://' ) {
-		url = 'http://' + url;
-	}
-	console.log('%s %s\n', filter, url);
+		res.writeHead(200, {'Content-Type': 'text/html'});
 
-	var url_tar = url_parser.parse(url, true);
-	
-	res.write('<head><base href="' + url_tar.protocol + '//' + url_tar.host +'/" target="_blank"></head>');
-	
-	var translator = spawn(filter);
-	function streamURI(uri, options, next){
-	}
-	hyperdirect(100)(url)
+		var url_con = url_parser.parse(req.url, true);
+		//console.log(url_con);
+
+		var url = url_con.query.u;
+		var filter = url_con.query.f;
+		console.log(url)
+		if ( url.slice(0,7) != 'http://' && url.slice(0,8) != 'https://' ) {
+			url = 'http://' + url;
+		}
+		console.log('%s %s\n', filter, url);
+
+		var url_tar = url_parser.parse(url, true);
+
+		res.write('<head><base href="' + url_tar.protocol + '//' + url_tar.host +'/" target="_blank"></head>');
+
+		var translator = spawn(filter);
+		function streamURI(uri, options, next){
+		}
+		hyperdirect(100)(url)
 		.pipe(translator.stdin)
-	translator.stdout.pipe(res);
+		translator.stdout.pipe(res);
+	}
 });
 
 app.listen(3000);
